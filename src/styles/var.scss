@@ -1,0 +1,48 @@
+$--color-primary: #2b50ed;
+
+$--font-path: '~element-ui/lib/theme-chalk/fonts';
+
+@mixin capital-text($font-size: 10px) {
+  color: #17213e;
+  font-weight: 500;
+  letter-spacing: 1px;
+  font-size: $font-size;
+  text-transform: uppercase;
+  -webkit-font-smoothing: initial;
+}
+
+@mixin rich-text() {
+  line-height: 2;
+  font-size: 14px;
+  color: #314659;
+  -webkit-font-smoothing: initial;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  blockquote {
+    margin: 1em 0;
+    font-size: 90%;
+    color: #697b8c;
+    padding-left: 0.8em;
+    border-left: 4px solid #ebedf0;
+  }
+  a {
+    color: #2b50ed;
+    text-decoration: none;
+  }
+  img {
+    max-width: 100%;
+    margin: 1rem auto;
+    border-radius: 3px;
+    vertical-align: middle;
+  }
+  p {
+    margin: 0;
+    padding: 0;
+  }
+  ol,
+  ul {
+    padding: 0;
+    li::before {
+      text-align: center;
+    }
+  }
+}
