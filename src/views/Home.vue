@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <QuillEditor v-model="editorHtml"/>
+    <QuillEditor v-model="editorHtml" />
   </div>
 </template>
 
@@ -15,6 +15,11 @@ export default {
   data () {
     return {
       editorHtml: ''
+    }
+  },
+  watch: {
+    editorHtml (val) {
+      console.log(val)
     }
   }
 }

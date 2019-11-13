@@ -1,35 +1,57 @@
 <template>
-  <div class="editor">
+  <div class="rich-editor" :style="{ 'min-height': height }">
     <div id="ql-toolbar" class="ql-toolbar ql-snow">
-      <button type="button" class="ql-header" value="2"></button>
+      <!-- 字号 -->
+      <select class="ql-size">
+        <option v-for="item in sizes.item" :key="item" :value="item" :selected="item === sizes.default" />
+      </select>
+      <!-- 字体 -->
+      <select class="ql-font">
+        <option v-for="item in fonts.item" :key="item" :value="item" :selected="item === fonts.default" />
+      </select>
+      <span class="separated"></span>
+      <!-- 标题 -->
+      <button type="button" class="ql-header" v-for="item in headers" :key="item" :value="item">H{{ item }}</button>
+      <span class="separated"></span>
+      <!-- 粗体/斜体/下划线 -->
       <button type="button" class="ql-bold"></button>
       <button type="button" class="ql-italic"></button>
       <button type="button" class="ql-underline"></button>
+      <!-- 字体颜色/字体背景 -->
+      <select class="ql-color"></select>
+      <select class="ql-background"></select>
       <span class="separated"></span>
+      <!-- 中划线/code/引用 -->
       <button type="button" class="ql-strike"></button>
       <button type="button" class="ql-code-block"></button>
       <button type="button" class="ql-blockquote"></button>
       <span class="separated"></span>
+      <!-- 有序/无序列表 -->
       <button type="button" class="ql-list" value="ordered"></button>
       <button type="button" class="ql-list" value="bullet"></button>
       <span class="separated"></span>
+      <!-- 字体 align -->
       <select class="ql-align">
-        <option selected="selected"></option>
-        <option value="center"></option>
-        <option value="right"></option>
-        <option value="justify"></option>
+        <option v-for="item in aligns.item" :key="item" :value="item" :selected="item === aligns.default" />
       </select>
+      <!-- 清除格式 -->
       <button type="button" class="ql-clean"></button>
       <span class="separated"></span>
+      <!-- 引用链接/图片上传 -->
       <button type="button" class="ql-link"></button>
       <button type="button" class="ql-image"></button>
+      <!-- <button id="custom-button" style="width: auto;">自定义</button> -->
     </div>
     <quillEditor
       spellcheck="false"
       @ready="onReady"
       :options="config"
       :value="value"
+      @change="value => $emit('change', value)"
       @input="value => $emit('input', value)" />
+    <!-- <div class="quill-code">
+      <code class="hljs" v-html="contentCode"></code>
+    </div> -->
   </div>
 </template>
 
@@ -37,37 +59,95 @@
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import { quillEditor } from 'vue-quill-editor'
-// import { upload } from 'api/systems'
+import hljs from 'highlight.js'
 
 export default {
-  props: ['value'],
+  props: {
+    value: String,
+    height: {
+      type: String,
+      default: '300px'
+    },
+    sizes: {
+      type: Object,
+      default: () => {
+        return {
+          item: ['26rem', '30rem', '33rem', '36rem', '40rem', '43rem', '46rem', '50rem'],
+          default: '33rem'
+        }
+      }
+    },
+    fonts: {
+      type: Object,
+      default: () => {
+        return {
+          item: ['sans serif', 'serif', 'monospace'],
+          default: 'sans serif'
+        }
+      }
+    },
+    headers: {
+      type: Array,
+      default: () => [1, 2, 3, 4]
+    },
+    aligns: {
+      type: Object,
+      default: () => {
+        return {
+          item: ['', 'center', 'right', 'justify'],
+          default: ''
+        }
+      }
+    },
+    config: {
+      type: Object,
+      default: () => {
+        return {
+          placeholder: '写点什么...',
+          // scrollingContainer: '.el-main',
+          modules: {
+            toolbar: {
+              container: '#ql-toolbar'
+            },
+            history: {
+              delay: 100,
+              maxStack: 50,
+              userOnly: false
+            },
+            syntax: {
+              highlight: text => hljs.highlightAuto(text).value
+            },
+            imageResize: {
+              displayStyles: {
+                backgroundColor: 'black',
+                border: 'none',
+                color: 'white'
+              },
+              modules: ['Resize']
+            }
+          }
+        }
+      }
+    }
+  },
   components: {
     quillEditor
   },
   data () {
     return {
-      editor: null,
-      config: {
-        placeholder: '写点什么...',
-        scrollingContainer: '.el-main',
-        modules: {
-          toolbar: '#ql-toolbar',
-          history: {
-            delay: 1000,
-            maxStack: 50,
-            userOnly: false
-          },
-          imageResize: {
-            displayStyles: {
-              backgroundColor: 'black',
-              border: 'none',
-              color: 'white'
-            },
-            modules: ['Resize']
-          }
-        }
-      }
+      editor: null
     }
+  },
+  computed: {
+    contentCode () {
+      return hljs.highlightAuto(this.value).value
+    }
+  },
+  mounted () {
+    // const customButton = document.querySelector('#custom-button')
+    // customButton.addEventListener('click', () => {
+    //   console.log('Clicked!')
+    // })
   },
   methods: {
     onReady (editor) {
@@ -85,7 +165,7 @@ export default {
         for (let i = 0; i < input.files.length; i++) {
           let formData = new FormData()
           formData.append('file', input.files[i])
-          console.log(formData)
+          this.$emit('image-upload', formData, this.editor)
           // upload(formData)
           //   .then(({ data }) => {
           //     let length = this.editor.getSelection().index
@@ -100,68 +180,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import '~styles/var.scss';
-.editor {
-  min-height: 300px;
-  margin: 50px;
-  border-radius: 4px;
-  border: 1px solid #eeeeee;
-  // border: 1px solid #f0f3f9;
-  .quill-editor {
-    .ql-container {
-      border: none;
-    }
-    .ql-editor {
-      @include rich-text();
-    }
-    .ql-tooltip + div {
-      border: none !important;
-      box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.3) !important;
-      div {
-        opacity: 1 !important;
-        height: 12px !important;
-        width: 12px !important;
-        border-radius: 9px !important;
-        background: #2b50ed !important;
-        border: 2px solid #fff !important;
-        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.45) !important;
-      }
-    }
-    .ql-editor.ql-blank::before {
-      color: #ccd0d3;
-      font-style: inherit;
-    }
-  }
-  .ql-toolbar {
-    border: none;
-    display: flex;
-    align-items: center;
-    button,
-    span {
-      fill: #a6aab5;
-      &:hover {
-        opacity: 1;
-        fill: #000000;
-      }
-    }
-    .ql-active {
-      fill: #000000;
-    }
-    button {
-      width: 30px;
-      height: 24px;
-      svg {
-        width: 100%;
-      }
-    }
-    .separated {
-      width: 1px;
-      height: 16px;
-      margin: 0 8px;
-      background: #d6dfe8;
-      display: inline-block;
-      vertical-align: middle;
-    }
-  }
-}
+@import '~styles/quill-editor.scss';
 </style>

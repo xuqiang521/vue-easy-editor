@@ -1,0 +1,118 @@
+@mixin rich-text() {
+  line-height: 2;
+  font-size: 14px;
+  color: #314659;
+  -webkit-font-smoothing: initial;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  blockquote {
+    margin: 1em 0;
+    font-size: 90%;
+    color: #697b8c;
+    padding-left: 0.8em;
+    border-left: 4px solid #ebedf0;
+  }
+  a {
+    color: #2b50ed;
+    text-decoration: none;
+  }
+  img {
+    max-width: 100%;
+    margin: 1rem auto;
+    border-radius: 3px;
+    vertical-align: middle;
+  }
+  p {
+    margin: 0;
+    padding: 0;
+  }
+  ol,
+  ul {
+    padding: 0;
+    li::before {
+      text-align: center;
+    }
+  }
+}
+
+@mixin rich-size() {
+  @each $size in 26rem, 30rem, 33rem, 36rem, 40rem, 43rem, 46rem, 50rem {
+    .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="#{$size}"]::before,
+    .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="#{$size}"]::before {
+      content: '#{$size}';
+      font-size: #{$size};
+    }
+  }
+}
+
+.rich-editor {
+  margin: 50px;
+  border-radius: 4px;
+  border: 1px solid #ededed;
+
+  .quill-editor {
+    .ql-container {
+      border: none;
+    }
+    .ql-editor {
+      @include rich-text();
+    }
+    .ql-tooltip + div {
+      border: none !important;
+      box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.3) !important;
+      div {
+        opacity: 1 !important;
+        height: 12px !important;
+        width: 12px !important;
+        border-radius: 9px !important;
+        background: #2b50ed !important;
+        border: 2px solid #fff !important;
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.45) !important;
+      }
+    }
+    .ql-editor.ql-blank::before {
+      color: #ccd0d3;
+      font-style: inherit;
+    }
+  }
+
+  .ql-toolbar {
+    border: none;
+    display: flex;
+    align-items: center;
+    button,
+    span {
+      fill: #a6aab5;
+      &:hover {
+        opacity: 1;
+        fill: #000000;
+      }
+    }
+    .ql-active {
+      fill: #000000;
+    }
+    button {
+      width: 30px;
+      height: 24px;
+      svg {
+        width: 100%;
+      }
+    }
+    .separated {
+      width: 1px;
+      height: 16px;
+      margin: 0 8px;
+      background: #d6dfe8;
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+
+  .ql-snow .ql-header {
+    font-size: 14px;
+    font-family: PingFangSC-Medium;
+    font-weight: bold;
+    color: #444444;
+  }
+
+  @include rich-size();
+}

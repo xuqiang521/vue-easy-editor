@@ -19,6 +19,7 @@
     "element-ui": "^2.8.2",
     "js-cookie": "^2.2.0",
     "nprogress": "^0.2.0",
+    "quill-image-drop-module": "^1.0.3",
     "quill-image-resize-module": "^3.0.0",
     "vue": "^2.6.10",
     "vue-quill-editor": "^3.0.6",
