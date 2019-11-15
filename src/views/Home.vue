@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <QuillEditor v-model="editorHtml" />
+    <QuillEditor v-model="editorHtml" @image-upload="handleImageUpload" />
   </div>
 </template>
 
@@ -9,17 +9,20 @@ import QuillEditor from '@/components/QuillEditor'
 
 export default {
   name: 'home',
+
   components: {
     QuillEditor
   },
+
   data () {
     return {
       editorHtml: ''
     }
   },
-  watch: {
-    editorHtml (val) {
-      console.log(val)
+
+  methods: {
+    handleImageUpload (files, editor, done) {
+      console.log(files, editor, done)
     }
   }
 }

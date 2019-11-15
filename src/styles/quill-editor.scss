@@ -11,20 +11,24 @@
     padding-left: 0.8em;
     border-left: 4px solid #ebedf0;
   }
+
   a {
     color: #2b50ed;
     text-decoration: none;
   }
+
   img {
     max-width: 100%;
     margin: 1rem auto;
     border-radius: 3px;
     vertical-align: middle;
   }
+
   p {
     margin: 0;
     padding: 0;
   }
+
   ol,
   ul {
     padding: 0;
@@ -44,8 +48,11 @@
   }
 }
 
+html {
+  font-size: 0.5px;
+}
+
 .rich-editor {
-  margin: 50px;
   border-radius: 4px;
   border: 1px solid #ededed;
 
@@ -53,22 +60,11 @@
     .ql-container {
       border: none;
     }
+
     .ql-editor {
       @include rich-text();
     }
-    .ql-tooltip + div {
-      border: none !important;
-      box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.3) !important;
-      div {
-        opacity: 1 !important;
-        height: 12px !important;
-        width: 12px !important;
-        border-radius: 9px !important;
-        background: #2b50ed !important;
-        border: 2px solid #fff !important;
-        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.45) !important;
-      }
-    }
+
     .ql-editor.ql-blank::before {
       color: #ccd0d3;
       font-style: inherit;
@@ -87,9 +83,7 @@
         fill: #000000;
       }
     }
-    .ql-active {
-      fill: #000000;
-    }
+  
     button {
       width: 30px;
       height: 24px;
@@ -97,6 +91,11 @@
         width: 100%;
       }
     }
+
+    .ql-active {
+      fill: #000000;
+    }
+  
     .separated {
       width: 1px;
       height: 16px;
@@ -108,6 +107,7 @@
   }
 
   .ql-snow .ql-header {
+    width: auto;
     font-size: 14px;
     font-family: PingFangSC-Medium;
     font-weight: bold;
