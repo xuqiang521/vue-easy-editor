@@ -39,7 +39,7 @@
 }
 
 @mixin rich-size() {
-  @each $size in 26rem, 30rem, 33rem, 36rem, 40rem, 43rem, 46rem, 50rem {
+  @each $size in '12px', '13px', '14px', '16px', '20px', '24px', '28px' {
     .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="#{$size}"]::before,
     .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="#{$size}"]::before {
       content: '#{$size}';
@@ -48,11 +48,7 @@
   }
 }
 
-html {
-  font-size: 0.5px;
-}
-
-.rich-editor {
+.vue-easy-editor {
   border-radius: 4px;
   border: 1px solid #ededed;
 
@@ -83,7 +79,7 @@ html {
         fill: #000000;
       }
     }
-  
+
     button {
       width: 30px;
       height: 24px;
@@ -95,7 +91,7 @@ html {
     .ql-active {
       fill: #000000;
     }
-  
+
     .separated {
       width: 1px;
       height: 16px;

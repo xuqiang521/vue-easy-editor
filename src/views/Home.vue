@@ -1,17 +1,16 @@
 <template>
   <div class="home">
-    <QuillEditor v-model="editorHtml" @image-upload="handleImageUpload" />
+    <VueEasyEditor v-model="editorHtml" @image-upload="handleImageUpload" />
   </div>
 </template>
 
 <script>
-import QuillEditor from '@/components/QuillEditor'
-
+import { VueEasyEditor } from 'packages/index'
 export default {
   name: 'home',
 
   components: {
-    QuillEditor
+    VueEasyEditor
   },
 
   data () {

@@ -1,10 +1,14 @@
 <template>
-  <div class="rich-editor" :style="{ 'min-height': height }">
+  <div class="vue-easy-editor" :style="{ 'min-height': height }">
     <div id="ql-toolbar" class="ql-toolbar ql-snow">
       <slot>
         <!-- 字号 -->
         <select class="ql-size">
-          <option v-for="item in sizes.item" :key="item" :value="item" :selected="item === sizes.default" />
+          <option
+            v-for="item in sizes.item"
+            :key="item"
+            :value="item"
+            :selected="item === sizes.default" />
         </select>
 
         <!-- 字体 -->
@@ -15,7 +19,7 @@
             :value="item"
             :selected="item === fonts.default" />
         </select>
-        <span class="separated"></span>
+        <span class="separated" />
 
         <!-- 标题 -->
         <button
@@ -24,28 +28,28 @@
           v-for="item in headers"
           :key="item"
           :value="item">H{{ item }}</button>
-        <span class="separated"></span>
+        <span class="separated" />
 
         <!-- 粗体/斜体/下划线 -->
-        <button type="button" class="ql-bold"></button>
-        <button type="button" class="ql-italic"></button>
-        <button type="button" class="ql-underline"></button>
+        <button type="button" class="ql-bold" />
+        <button type="button" class="ql-italic" />
+        <button type="button" class="ql-underline" />
 
         <!-- 字体颜色/字体背景 -->
-        <select class="ql-color"></select>
-        <select class="ql-background"></select>
-        <span class="separated"></span>
+        <select class="ql-color" />
+        <select class="ql-background" />
+        <span class="separated" />
 
         <!-- 中划线/code/引用 -->
-        <button type="button" class="ql-strike"></button>
-        <button type="button" class="ql-code-block"></button>
-        <button type="button" class="ql-blockquote"></button>
-        <span class="separated"></span>
+        <button type="button" class="ql-strike" />
+        <button type="button" class="ql-code-block" />
+        <button type="button" class="ql-blockquote" />
+        <span class="separated" />
 
         <!-- 有序/无序列表 -->
-        <button type="button" class="ql-list" value="ordered"></button>
-        <button type="button" class="ql-list" value="bullet"></button>
-        <span class="separated"></span>
+        <button type="button" class="ql-list" value="ordered" />
+        <button type="button" class="ql-list" value="bullet" />
+        <span class="separated" />
 
         <!-- 字体 align -->
         <select class="ql-align">
@@ -57,12 +61,12 @@
         </select>
 
         <!-- 清除格式 -->
-        <button type="button" class="ql-clean"></button>
-        <span class="separated"></span>
+        <button type="button" class="ql-clean" />
+        <span class="separated" />
 
         <!-- 引用链接/图片上传 -->
-        <button type="button" class="ql-link"></button>
-        <button type="button" class="ql-image"></button>
+        <button type="button" class="ql-link" />
+        <button type="button" class="ql-image" />
 
         <!-- 自定义功能 -->
         <slot name="custom-button">
@@ -71,37 +75,38 @@
       </slot>
     </div>
 
-    <quillEditor
+    <quill-editor
       spellcheck="false"
       @ready="onReady"
       :options="config"
       :value="value"
       @change="value => $emit('change', value)"
       @input="value => $emit('input', value)" />
-
-    <!-- quill-code -->
-    <div class="quill-code" v-if="showCode">
-      <code class="hljs" v-html="contentCode"></code>
-    </div>
   </div>
 </template>
 
 <script>
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import '@/plugins'
 import { quillEditor } from 'vue-quill-editor'
-import hljs from 'highlight.js'
+import Quill from 'quill'
+const Size = Quill.import('attributors/style/size')
+const icons = Quill.import('ui/icons')
+const DEFAULT_SIZES = ['12px', '13px', '14px', '16px', '20px', '24px', '28px']
+
+Size.whitelist = DEFAULT_SIZES
+icons.header[1] = ''
+icons.header[2] = ''
+
+Quill.register(Size, true)
 
 export default {
+  name: 'vue-easy-editor',
+
   components: {
     quillEditor
   },
 
   props: {
     value: String,
-
-    showCode: Boolean,
 
     imageMultiple: {
       type: Boolean,
@@ -117,8 +122,8 @@ export default {
       type: Object,
       default: () => {
         return {
-          item: ['26rem', '30rem', '33rem', '36rem', '40rem', '43rem', '46rem', '50rem'],
-          default: '33rem'
+          item: DEFAULT_SIZES,
+          default: '14px'
         }
       }
     },
@@ -162,17 +167,6 @@ export default {
               delay: 100,
               maxStack: 50,
               userOnly: false
-            },
-            syntax: {
-              highlight: text => hljs.highlightAuto(text).value
-            },
-            imageResize: {
-              displayStyles: {
-                backgroundColor: 'black',
-                border: 'none',
-                color: 'white'
-              },
-              modules: ['Resize']
             }
           }
         }
@@ -183,12 +177,6 @@ export default {
   data () {
     return {
       editor: null
-    }
-  },
-
-  computed: {
-    contentCode () {
-      return hljs.highlightAuto(this.value).value
     }
   },
 
@@ -217,7 +205,7 @@ export default {
     },
 
     setImage (url) {
-      if (!url) return console.error('请传入 url 参数')
+      if (!url) return new Error('请传入 url 参数')
       let length = this.editor.getSelection().index
       this.editor.insertEmbed(length, 'image', url)
       this.editor.setSelection(length + 1)
@@ -227,5 +215,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '~styles/quill-editor.scss';
+@import url('~quill/dist/quill.core.css');
+@import url('~quill/dist/quill.snow.css');
+@import './main.scss';
 </style>
