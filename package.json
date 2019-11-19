@@ -27,21 +27,20 @@
     "dev": "npm run serve",
     "deploy": "npm run build && gh-pages -d dist",
     "lint": "vue-cli-service lint",
-    "build": "vue-cli-service build",
-    "lib": "vue-cli-service build --target lib --name index --dest lib packages/index.js",
+    "build": "vue-cli-service build --target lib --name index --dest lib packages/index.js",
+    "lib": "npm install && npm run build",
     "publish-prod": "npm run lib && npm publish",
+    "release": "sh build/release.sh",
     "build-report": "vue-cli-service build --report && open dist/report.html"
   },
   "dependencies": {
     "core-js": "^2.6.5",
     "vue": "^2.6.10",
-    "vue-router": "^3.0.3"
+    "vue-router": "^3.0.3",
+    "vue-quill-editor": "^3.0.6"
   },
   "expDependencies": {
     "quill-image-resize-module": "^3.0.0",
-    "vue-quill-editor": "^3.0.6",
-    "node-sass": "^4.9.0",
-    "sass-loader": "^7.1.0",
     "vue-easy-editor": "^0.1.2"
   },
   "devDependencies": {
@@ -54,6 +53,9 @@
     "eslint-plugin-vue": "^5.0.0",
     "gh-pages": "^2.0.1",
     "lint-staged": "^7.3.0",
+    "node-sass": "^4.9.0",
+    "sass-loader": "^7.1.0",
+    "shelljs": "^0.8.3",
     "vue-template-compiler": "^2.5.21"
   },
   "gitHooks": {

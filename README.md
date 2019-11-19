@@ -70,6 +70,56 @@ export default {
 </script>
 ```
 
+### 定制字体大小
+**由于 vue-easy-editor 的字体大小本身就是定制过的，但肯定不能满足所有需求，所以如果你需要再次定制，也完全是 OK 的，范例如下**
+
+```html
+<template>
+  <div class="home">
+    <vue-easy-editor v-model="editorHtml" :sizes="sizes" />
+  </div>
+</template>
+
+<script>
+import { VueEasyEditor } from 'packages/index'
+export default {
+  name: 'home',
+
+  components: {
+    VueEasyEditor
+  },
+
+  data () {
+    return {
+      editorHtml: '',
+      sizes: {
+        item: ['26rem', '30rem', '33rem', '36rem', '40rem', '43rem', '46rem', '50rem'],
+        default: '33rem'
+      }
+    }
+  }
+}
+</script>
+
+<style lang="scss">
+@mixin rich-size() {
+  @each $size in ['26rem', '30rem', '33rem', '36rem', '40rem', '43rem', '46rem', '50rem'] {
+    .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="#{$size}"]::before,
+    .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="#{$size}"]::before {
+      content: '#{$size}';
+      font-size: #{$size};
+    }
+  }
+}
+html {
+  font-size: 0.5px;
+}
+.vue-easy-editor {
+  @include rich-size();
+}
+</style>
+```
+
 ### Attributes
 | 参数      | 说明          | 类型      | 可选值                           | 默认值  |
 |---------- |-------------- |---------- |--------------------------------  |-------- |
@@ -87,4 +137,4 @@ export default {
 |---------- |-------- |---------- |
 | change | 文本change事件 | value：文本内容 |
 | input | 文本input事件 | value：文本内容 |
-| image-upload | 图片上传事件 | files：上传文件, editor：编辑器, done：上传回调 |
+| image-upload | 图片上传事件 | files：上传文件, editor：编辑器, done：图片上传完成的回调，执行会直接插入上传好的图片到富文本制定的位置 |

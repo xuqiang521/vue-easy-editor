@@ -90,13 +90,6 @@ import { quillEditor } from 'vue-quill-editor'
 import Quill from 'quill'
 const Size = Quill.import('attributors/style/size')
 const icons = Quill.import('ui/icons')
-const DEFAULT_SIZES = ['12px', '13px', '14px', '16px', '20px', '24px', '28px']
-
-Size.whitelist = DEFAULT_SIZES
-icons.header[1] = ''
-icons.header[2] = ''
-
-Quill.register(Size, true)
 
 export default {
   name: 'vue-easy-editor',
@@ -122,7 +115,7 @@ export default {
       type: Object,
       default: () => {
         return {
-          item: DEFAULT_SIZES,
+          item: ['12px', '13px', '14px', '16px', '20px', '24px', '28px'],
           default: '14px'
         }
       }
@@ -178,6 +171,13 @@ export default {
     return {
       editor: null
     }
+  },
+
+  created () {
+    Size.whitelist = this.sizes.item
+    icons.header[1] = ''
+    icons.header[2] = ''
+    Quill.register(Size, true)
   },
 
   mounted () {
