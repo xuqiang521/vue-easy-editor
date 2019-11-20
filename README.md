@@ -16,7 +16,7 @@ yarn add vue-easy-editor
 
 ### CDN
 ```html
-<script type="text/javascript" src="https://unpkg.com/vue-easy-editor/lib/vue-easy-editor.umd.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/vue-easy-editor/lib/index.umd.min.js"></script>
 <script type="text/javascript">
   Vue.use(window.VueEasyEditor)
 </script>
