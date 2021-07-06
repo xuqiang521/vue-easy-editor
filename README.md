@@ -129,7 +129,8 @@ html {
 | fonts | 字体选项 | object | { item: string[], default: string } | { item: ['sans serif', 'serif', 'monospace'], default: 'sans serif' } |
 | headers | 标题选项 | array | number[] | [1, 2, 3, 4] |
 | aligns | 居中选项 | object | { item: string[], default: string } | { item: ['', 'center', 'right', 'justify'], default: '' } |
-| config | 文本配置 | object | — | 详细看 quill config 配置 |
+| canCustom | 是否可自定义功能按钮 | boolean | boolean | false |
+| config | 文本配置 | object | — | 详细看 [quill config](https://quilljs.com/docs/configuration/#options) 配置 |
 
 
 ### Events
@@ -138,3 +139,8 @@ html {
 | change | 文本change事件 | value：文本内容 |
 | input | 文本input事件 | value：文本内容 |
 | image-upload | 图片上传事件 | files：上传文件, editor：编辑器, done：图片上传完成的回调，执行会直接插入上传好的图片到富文本制定的位置 |
+
+### slot
+| 事件名称 | 说明 | 回调参数 |
+|---------- |-------- |---------- |
+| custom-button | 自定义功能按钮 | - |

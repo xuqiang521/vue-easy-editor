@@ -69,7 +69,7 @@
         <button type="button" class="ql-image" />
 
         <!-- 自定义功能 -->
-        <slot name="custom-button">
+        <slot name="custom-button" v-if="canCustom">
           <button id="custom-button" style="width: auto;">自定义</button>
         </slot>
       </slot>
@@ -78,7 +78,7 @@
     <quill-editor
       spellcheck="false"
       @ready="onReady"
-      :options="config"
+      :options="options"
       :value="value"
       @change="value => $emit('change', value)"
       @input="value => $emit('input', value)" />
@@ -146,6 +146,8 @@ export default {
       }
     },
 
+    canCustom: Boolean,
+
     config: {
       type: Object,
       default: () => {
@@ -167,6 +169,26 @@ export default {
     }
   },
 
+  computed: {
+    options () {
+      return {
+        placeholder: '写点什么...',
+        scrollingContainer: 'body',
+        modules: {
+          toolbar: {
+            container: '#ql-toolbar'
+          },
+          history: {
+            delay: 100,
+            maxStack: 50,
+            userOnly: false
+          }
+        },
+        ...this.config
+      }
+    }
+  },
+
   data () {
     return {
       editor: null
@@ -181,10 +203,12 @@ export default {
   },
 
   mounted () {
-    const customButton = document.querySelector('#custom-button')
-    customButton.addEventListener('click', () => {
-      alert('自定义点击功能!')
-    })
+    if (this.canCustom) {
+      const customButton = document.querySelector('#custom-button')
+      customButton.addEventListener('click', () => {
+        alert('自定义点击功能!')
+      })
+    }
   },
 
   methods: {
